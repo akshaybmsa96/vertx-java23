@@ -12,16 +12,6 @@ public class App extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) {
-//        vertx.createHttpServer()
-//                .requestHandler(req ->
-//                        req.response().end("Hello from Vert.x! 🚀"))
-//                .listen(8080, http -> {
-//                    if (http.succeeded()) {
-//                        System.out.println("HTTP server running on port 8080");
-//                    } else {
-//                        System.out.println("Failed to start server: " + http.cause());
-//                    }
-//                });
 
         Injector injector = Guice.createInjector(new AppModule(vertx));
         ApiRouter apiRouter = injector.getInstance(ApiRouter.class);
