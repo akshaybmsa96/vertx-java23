@@ -1,18 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.akki</groupId>
   <artifactId>javatest</artifactId>
-  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>javatest</name>
   <url>http://maven.apache.org</url>
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>23</maven.compiler.source>
     <maven.compiler.target>23</maven.compiler.target>
   </properties>
   <dependencies>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -26,7 +28,6 @@
       <version>4.5.1</version>
     </dependency>
 
-    <!-- Vert.x Web (For HTTP Server) -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
@@ -39,7 +40,6 @@
       <version>6.0.0</version>
     </dependency>
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -50,22 +50,24 @@
 
   <build>
     <plugins>
+      <!-- Compiler Plugin with Java 23 and Lombok -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
+          <release>23</release>
           <annotationProcessorPaths>
             <path>
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
-              <version>1.18.36</version>
+              <version>1.18.38</version>
             </path>
           </annotationProcessorPaths>
-          <release>23</release>
         </configuration>
       </plugin>
 
+      <!-- Jar Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -73,13 +75,13 @@
         <configuration>
           <archive>
             <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <mainClass>com.akki.App</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
 
+      <!-- Assembly Plugin for fat jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -104,8 +106,37 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- GraalVM Native Build Tools Plugin -->
+      <plugin>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <version>0.9.28</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.akki.App</mainClass>
+          <buildArgs>
+            <buildArg>--no-fallback</buildArg>
+            <buildArg>--report-unsupported-elements-at-runtime</buildArg>
+          </buildArgs>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
-
+  <profiles>
+    <profile>
+      <id>native</id>
+      <build>
+        <defaultGoal>package</defaultGoal>
+      </build>
+    </profile>
+  </profiles>
 </project>

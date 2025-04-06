@@ -1,0 +1,30 @@
+[
+  {
+    "name": "com.akki.Addition",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.akki.Test",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "constructors": [
+      {
+        "parameterTypes": ["com.akki.Addition"]
+      }
+    ]
+  },
+  {
+    "name": "com.akki.App",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.akki.ApiRouter",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "constructors": [
+      {
+        "parameterTypes": ["io.vertx.core.Vertx"]
+      }
+    ]
+  }
+]
